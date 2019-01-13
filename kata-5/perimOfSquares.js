@@ -3,5 +3,9 @@
 // Could you give the sum of the perimeters of all the squares in a rectangle when there are n + 1 squares disposed in the same manner.
 
 function perimeter(n) {
-  return ... fib...
+  var fibArr = []
+  for(var i = 0; i <= n; i ++){
+    fibArr.push((fibArr[i-1] || 1) + (fibArr[i-2] || 0))
+  }
+  return fibArr.reduce((acc, curr) => acc + curr) * 4;
 }
