@@ -9,5 +9,10 @@
 // The input data consist of an array which contains at least 1 name, and single integer n.
 
 function whoIsNext(names, r){
-  //your code here
-}
+  let base = names.length;
+  while(r > base) {
+    r = Math.floor((r - (base - 1)) / 2);
+//     console.log(r)
+  }
+  return names[r-1]
+};
