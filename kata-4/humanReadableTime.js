@@ -24,5 +24,41 @@
 // A unit of time must be used "as much as possible". It means that the function should not return 61 seconds, but 1 minute and 1 second instead. Formally, the duration specified by of a component must not be greater than any valid more significant unit of time.
 
 function formatDuration (seconds) {
+  if(seconds === 0) return 'now';
+  let secondsLeft = seconds;
+  let years = Math.floor(seconds / (60*60*24*365))
+  secondsLeft = secondsLeft % (60*60*24*365);
+  let days = Math.floor(secondsLeft / (60*60*24));
+  secondsLeft = secondsLeft % (60*60*24);
+  let hours = Math.floor(secondsLeft / (60*60));
+  secondsLeft = secondsLeft % (60*60);
+  let minutes = Math.floor(secondsLeft / 60);
+  secondsLeft = secondsLeft % 60;
+
+  let sayYears = (years > 1) ? `${years} years` : (years === 1) ? `${years} year`: '0 years';
+  let sayDays = (days > 1) ? `${days} days` : (days === 1) ? `${days} day`: '0 days';
+  let sayHours = (hours > 1) ? `${hours} hours` : (hours === 1) ? `${hours} hour`: '0 hours';
+  let sayMinutes = (minutes > 1) ? `${minutes} minutes` : (minutes === 1) ? `${minutes} minute`: '0 minutes';
+  let saySeconds = (secondsLeft > 1) ? `${secondsLeft} seconds` : (secondsLeft === 1) ? `${secondsLeft} second`: '0 seconds';
   
+  let message = (seconds % (60*60*24*365) === 0) ? `${sayYears}` :
+        (years) ? `${sayYears}, ${sayDays}, ${sayHours}, ${sayMinutes}, ${saySeconds}` :
+        (days) ? `${sayDays}, ${sayHours}, ${sayMinutes}, ${saySeconds}` :
+        (hours) ? `${sayHours}, ${sayMinutes}, ${saySeconds}` :
+        (minutes) ? `${sayMinutes}, ${saySeconds}` :
+        `${saySeconds}`;
+
+  let newMessage = (message.includes(`, 0 hours, 0 minutes, 0 seconds`)) ? message.split(`, 0 hours, 0 minutes, 0 seconds`) :
+    (message.includes(`, 0 minutes, 0 seconds`)) ? message.split(', 0 minutes, 0 seconds') :
+    (message.includes(`, 0 seconds`)) ? message.split(', 0 seconds') :
+    message;
+  newMessage = [...newMessage].join('');
+  newMessage = newMessage.split('');
+  let andIndex = (newMessage.lastIndexOf(','));
+  // console.log(andIndex, newMessage);
+  if(andIndex !== -1) {
+    newMessage.splice(andIndex, 1, ' ', 'a','n','d');
+  }
+
+  return newMessage.join('');
 }
